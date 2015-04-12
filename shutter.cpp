@@ -7,8 +7,8 @@ const int motorDownPin = 3;
 const int isSomeonePresentPin = 4;
 const int isLightSufficientPin = 5;
 
-const int outerTemperatureSensorPin = 0;
-const int innerTemperatureSensorPin = 1;
+const int outerTemperatureAnalogPin = 0;
+const int innerTemperatureAnalogPin = 1;
 
 /* VALUES */
 int outerTemperature = 0;
