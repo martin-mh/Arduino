@@ -26,8 +26,8 @@ void updateDatas()
   isSomeonePresent = digitalRead(isSomeonePresentPin);
   isLightSufficient = digitalRead(isLightSufficientPin);
   
-  outerTemperature = analogRead(outerTemperatureSensorPin);
-  innerTemperature = analogRead(innerTemperatureSensorPin);
+  outerTemperature = analogRead(outerTemperatureAnalogPin);
+  innerTemperature = analogRead(innerTemperatureAnalogPin);
 }
 
 void openShutter()
