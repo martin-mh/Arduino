@@ -14,12 +14,58 @@ const int innerTemperatureAnalogPin = 1;
 int outerTemperature = 0;
 int innerTemperature = 0;
 
+/* Values got from analog read of temperatures have constant described here */
+int sevenDegrees = 431;
+int sixteenDegrees = 448;
+int twentytwoDegrees = 461;
+int twentysevenDegrees = 471;
+
+int sevenDegreesMax = sevenDegrees + ((sixteenDegrees - sevenDegrees) / 2);
+int sevenDegreesMin = sevenDegrees - ((sixteenDegrees - sevenDegrees) / 2);
+
+int sixteenDegreesMax = sixteenDegrees + ((twentytwoDegrees - sixteenDegrees) / 2);
+int sixteenDegreesMin = sixteenDegrees - ((sixteenDegrees - sevenDegrees) / 2);
+
+int twentytwoDegreesMax = twentytwoDegrees + ((twentysevenDegrees - twentytwoDegrees) / 2);
+int twentytwoDegreesMin = twentytwoDegrees - ((twentytwoDegrees - sixteenDegrees) / 2);
+
+int twentysevenDegreesMax = twentysevenDegreesMax + ((twentysevenDegrees - twentytwoDegrees) / 2);
+int twentysevenDegreesMin = twentysevenDegreesMax + ((twentysevenDegrees - twentytwoDegrees) / 2);
+
 int waitOnSwitchingShutterInMS = 3000;
 
 int isSomeonePresent = LOW;
 int isLightSufficient = LOW;
 
 short shutterState = 1; // 1 -> UP ; 0 -> DOWN ; -1 -> UNKNOWN
+
+bool isSevenDegrees(int degree)
+{
+  int max = sevenDegrees + 8;
+  int min = sevenDegrees - 8;
+  return degree < max && degree > min;
+}
+
+bool isSixteenDegrees(int degree)
+{
+  int max = sixteenDegrees + 6;
+  int min = sixteenDegrees - 8;
+  return degree < max && degree > min;
+}
+
+bool isTwentytwoDegrees(int degree)
+{
+  int max = twentytwoDegrees + 5;
+  int min = sixteenDegrees - 6;
+  return degree < max && degree > min;
+}
+
+bool isTwentysevenDegrees(int degree)
+{
+  int max = twentysevenDegrees + 6;
+  int min = twentysevenDegrees - 6;
+  return degree < max && degree > min;
+}
 
 void updateDatas()
 {
@@ -114,15 +160,15 @@ void setup() {
 void loop() {
   updateDatas();
   
-  if(outerTemperature <= 27 && outerTemperature >= 7)
+  if(outerTemperature <= twentysevenDegreesMax && outerTemperature >= sevenDegreesMin)
   {
     openShutter();
   }
-  else if(outerTemperature < 7)
+  else if(outerTemperature < sevenDegreesMax)
   {
     closeShutter();
   }
-  else if(outerTemperature > 27)
+  else if(outerTemperature > twentysevenDegreesMin)
   {
     if(isSomeonePresent == HIGH)
     {  
@@ -134,15 +180,15 @@ void loop() {
     }  
   }
   
-  if(innerTemperature >= 16 && innerTemperature <= 22)
+  if(innerTemperature >= sixteenDegreesMin && innerTemperature <= twentytwoDegreesMax)
   {
     openShutter();
   }
-  else if(innerTemperature < 16)
+  else if(innerTemperature < sixteenDegreesMax)
   {
     closeShutter();
   }
-  else if(innerTemperature > 22)
+  else if(innerTemperature > twentytwoDegreesMin)
   {
     if(isSomeonePresent == HIGH)
     {
